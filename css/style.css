@@ -1,0 +1,180 @@
+#playfield{
+    margin-left: 40px;
+    width:460px;
+    height:460px;
+}
+#playfield div{
+    margin-left: 40px;
+    width:444px;
+    height:444px;
+    float:left;
+    border:1px solid #ff8a00;
+}
+
+#ship1{
+    margin-left: 80px;
+    width:260px;
+    height:60px;
+}
+
+
+#ship2{
+    margin-left: 80px;
+    width:210px;
+    height:60px;
+}
+
+#ship3{
+    margin-left: 80px;
+    width:160px;
+    height:60px;
+}
+
+#ship4{
+    margin-left: 80px;
+    width:110px;
+    height:60px;
+}
+
+#ship1 div{
+    width:250px;
+    height:50px;
+    float:left;
+}
+
+
+#ship2 div{
+    width:200px;
+    height:50px;
+    float:left;
+}
+
+
+#ship3 div{
+    width:150px;
+    height:50px;
+    float:left;
+}
+
+#ship4 div{
+    width:100px;
+    height:50px;
+    float:left;
+}
+
+#ship1 span{
+    font-size:300%;
+    width:49px;
+    height:49px;
+    float:left;
+    display:block;
+    border:1px solid white;
+    text-align:center;
+    line-height:49px;
+    background-color:#0d2f5a;
+}
+
+#ship2 span{
+    font-size:300%;
+    width:49px;
+    height:49px;
+    float:left;
+    display:block;
+    border:1px solid white;
+    text-align:center;
+    line-height:49px;
+    background-color:#FF0000;
+}
+
+#ship3 span{
+    font-size:300%;
+    width:49px;
+    height:49px;
+    float:left;
+    display:block;
+    border:1px solid white;
+    text-align:center;
+    line-height:49px;
+    background-color:#00FF00;
+}
+
+
+#ship4 span{
+    font-size:300%;
+    width:49px;
+    height:49px;
+    float:left;
+    display:block;
+    border:1px solid white;
+    text-align:center;
+    line-height:48px;
+    background-color:#000000;
+}
+
+#playfield span{
+    font-size:300%;
+    width:49px;
+    height:49px;
+    float:left;
+    display:block;
+    border:1px solid white;
+    text-align:center;
+    line-height:49px;
+    background-color:#f2f2f2;
+}
+#playfield span:hover{
+    /*background-color:#FFFF00;*/
+    color:white;
+}
+
+#ship1 .mini-listing{
+    display: none;
+}
+#ship1:hover .mini-listing{
+    display: inline;
+}
+
+#ship2 .mini-listing {
+    display: none;
+}
+#ship2:hover .mini-listing {
+    display: inline;
+}
+
+#ship3 .mini-listing {
+    display: none;
+}
+#ship3:hover .mini-listing {
+    display: inline;
+}
+
+#ship4 .mini-listing {
+    display: none;
+}
+#ship4:hover .mini-listing {
+    display: inline;
+}
+/*button css*/
+.mini-listing.button, .mini-listing.button100 {
+    font-size: 14px;
+    margin-top: -5px;
+    padding: 5px 7px;
+}
+a.button {
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "proxima-nova-1","proxima-nova-2",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    line-height: 1;
+    padding: 9px 34px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+.gray {
+    background: none repeat scroll 0 0 #AAAAAA;
+}
+

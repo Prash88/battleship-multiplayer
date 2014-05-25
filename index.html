@@ -4,22 +4,28 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Battleship</title>
-    <script src="/javascripts/jquery-2.1.1.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-
     <!-- Optional theme -->
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
-    <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.15/firebase.js'></script>
-    <script type='text/javascript' src='https://cdn.firebase.com/js/simple-login/1.4.1/firebase-simple-login.js'></script>
+
     <!-- Latest compiled and minified JavaScript -->
     <script src="/js/bootstrap.min.js"></script>
+    <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.15/firebase.js'></script>
+    <script type='text/javascript' src='https://cdn.firebase.com/js/simple-login/1.4.1/firebase-simple-login.js'></script>
+    <script src="/javascripts/jquery-2.1.1.min.js"></script>
     <script>
         var authClient = null;
         $(document).ready(function() {
             var chatRef = new Firebase('https://codeday.firebaseio.com');
             authClient = new FirebaseSimpleLogin(chatRef, function(error, user) {
-
+                    if(user!=null)
+                    {
+                        console.log(user.id);
+                        console.log(user.provider);
+                        console.log(user.uid);
+                        window.location = "/shipselection.html"
+                    }
             });
         });
     </script>
@@ -35,7 +41,8 @@
             <br /><br />
             <p class="text-center">Connect with Facebook to play the game.</p>
             <div class="span12" style="text-align:center">
-                <a href="#" class="align-center" title="Login" onclick="javascript: authClient.login('facebook', { rememberMe: true });"><img src="/images/facebook_login.png" /></a><br /><br />
+                <a href="#" class="align-center" title="Login" onclick="javascript: authClient.login('facebook', { rememberMe: true, scope: 'email'
+});"><img src="/images/facebook_login.png" /></a><br /><br />
             </div>
         </div>
     </div>

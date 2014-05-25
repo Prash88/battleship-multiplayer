@@ -4,365 +4,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Battleship</title>
-<script src="/javascripts/jquery-2.1.1.min.js"></script>
+<link rel="stylesheet" href="/css/style.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="/css/bootstrap-theme.min.css">
 <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.15/firebase.js'></script>
-
-<style type="text/css">
-    #playfield{
-        width:920px;
-        height:920px;
-    }
-    #playfield div{
-        width:900px;
-        height:900px;
-        float:left;
-        border:1px solid #ff8a00;
-    }
-
-    #ship1{
-        width:520px;
-        height:120px;
-    }
-
-
-    #ship2{
-        width:420px;
-        height:120px;
-    }
-
-    #ship3{
-        width:320px;
-        height:120px;
-    }
-
-    #ship4{
-        width:220px;
-        height:120px;
-    }
-
-    #ship1 div{
-        width:500px;
-        height:100px;
-        float:left;
-        border:1px solid #0d2f5a;
-    }
-
-
-    #ship2 div{
-        width:400px;
-        height:100px;
-        float:left;
-        border:1px solid #0d2f5a;
-    }
-
-
-    #ship3 div{
-        width:300px;
-        height:100px;
-        float:left;
-        border:1px solid #0d2f5a;
-    }
-
-    #ship4 div{
-        width:200px;
-        height:100px;
-        float:left;
-        border:1px solid #0d2f5a;
-    }
-
-    #ship1 span{
-        font-size:300%;
-        width:98px;
-        height:98px;
-        float:left;
-        display:block;
-        border:1px solid white;
-        text-align:center;
-        line-height:99px;
-        background-color:#0d2f5a;
-    }
-
-    #ship2 span{
-        font-size:300%;
-        width:98px;
-        height:98px;
-        float:left;
-        display:block;
-        border:1px solid white;
-        text-align:center;
-        line-height:99px;
-        background-color:#FF0000;
-    }
-
-    #ship3 span{
-        font-size:300%;
-        width:98px;
-        height:98px;
-        float:left;
-        display:block;
-        border:1px solid white;
-        text-align:center;
-        line-height:99px;
-        background-color:#00FF00;
-    }
-
-
-    #ship4 span{
-        font-size:300%;
-        width:98px;
-        height:98px;
-        float:left;
-        display:block;
-        border:1px solid white;
-        text-align:center;
-        line-height:99px;
-        background-color:#000000;
-    }
-
-    #playfield span{
-        font-size:300%;
-        width:98px;
-        height:98px;
-        float:left;
-        display:block;
-        border:1px solid white;
-        text-align:center;
-        line-height:99px;
-        background-color:#f2f2f2;
-    }
-    #playfield span:hover{
-        background-color:#FFFF00;
-        color:white;
-    }
-
-    #ship1 .mini-listing{
-        display: none;
-    }
-    #ship1:hover .mini-listing{
-        display: inline;
-    }
-
-    #ship2 .mini-listing {
-        display: none;
-    }
-    #ship2:hover .mini-listing {
-        display: inline;
-    }
-
-    #ship3 .mini-listing {
-        display: none;
-    }
-    #ship3:hover .mini-listing {
-        display: inline;
-    }
-
-    #ship4 .mini-listing {
-        display: none;
-    }
-    #ship4:hover .mini-listing {
-        display: inline;
-    }
-        /*button css*/
-    .mini-listing.button, .mini-listing.button100 {
-        font-size: 14px;
-        margin-top: -5px;
-        padding: 5px 7px;
-    }
-    a.button {
-        border-radius: 3px 3px 3px 3px;
-        color: #FFFFFF;
-        cursor: pointer;
-        display: inline-block;
-        font-family: "proxima-nova-1","proxima-nova-2",Helvetica,Arial,sans-serif;
-        font-weight: bold;
-        line-height: 1;
-        padding: 9px 34px;
-        position: relative;
-        text-align: center;
-        text-decoration: none;
-        text-transform: uppercase;
-    }
-    .gray {
-        background: none repeat scroll 0 0 #AAAAAA;
-    }
-
-</style>
-
-<script>
-
-
-    function allowDrop(ev)
-    {
-        ev.preventDefault();
-    }
-
-    function drag(ev)
-    {
-        var t = ev.target.id;
-        ev.dataTransfer.setData("ship",t);
-    }
-
-    function drop(ev)
-    {
-        ev.preventDefault();
-        var data = ev.dataTransfer.getData("ship");
-        var height = document.getElementById(data).offsetHeight;
-        var p =  parseInt(ev.target.id);
-        if(height==120 && data=='ship1' && p%10<=5 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p+1)).style.backgroundColor == ''
-                && document.getElementById((p+2)).style.backgroundColor == '' && document.getElementById((p+3)).style.backgroundColor == '' && document.getElementById((p+4)).style.backgroundColor == '')
-        {
-            document.getElementById(data).remove();
-            document.getElementById(p).style.backgroundColor = '#0d2f5a';
-            document.getElementById(p+1).style.backgroundColor = '#0d2f5a';
-            document.getElementById(p+2).style.backgroundColor = '#0d2f5a';
-            document.getElementById(p+3).style.backgroundColor = '#0d2f5a';
-            document.getElementById(p+4).style.backgroundColor = '#0d2f5a';
-        }
-        var p1 = Math.floor(p/10);
-        var p2 = p%10;
-
-        if(height>120 && data=='ship1' && p1<=5 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p1+1)*10+p2).style.backgroundColor == ''
-                && document.getElementById((p1+2)*10+p2).style.backgroundColor == '' && document.getElementById((p1+3)*10+p2).style.backgroundColor == '' && document.getElementById((p1+4)*10+p2).style.backgroundColor == '')
-        {
-            document.getElementById(data).remove();
-            document.getElementById(p).style.backgroundColor = '#0d2f5a';
-            document.getElementById((p1+1)*10+p2).style.backgroundColor = '#0d2f5a';
-            document.getElementById((p1+2)*10+p2).style.backgroundColor = '#0d2f5a';
-            document.getElementById((p1+3)*10+p2).style.backgroundColor = '#0d2f5a';
-            document.getElementById((p1+4)*10+p2).style.backgroundColor = '#0d2f5a';
-        }
-        //red
-        if(height==120 && data=='ship2' && p%10<=6 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p+1)).style.backgroundColor == ''
-                && document.getElementById((p+2)).style.backgroundColor == '' && document.getElementById((p+3)).style.backgroundColor == '')
-        {
-            document.getElementById(data).remove();
-            document.getElementById(p).style.backgroundColor = '#FF0000';
-            document.getElementById(p+1).style.backgroundColor = '#FF0000';
-            document.getElementById(p+2).style.backgroundColor = '#FF0000';
-            document.getElementById(p+3).style.backgroundColor = '#FF0000';
-        }
-        var p1 = Math.floor(p/10);
-        var p2 = p%10;
-
-        if(height>120 && data=='ship2' && p1<=6 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p1+1)*10+p2).style.backgroundColor == ''
-                && document.getElementById((p1+2)*10+p2).style.backgroundColor == '' && document.getElementById((p1+3)*10+p2).style.backgroundColor == '')
-        {
-            document.getElementById(data).remove();
-            document.getElementById(p).style.backgroundColor = '#FF0000';
-            document.getElementById((p1+1)*10+p2).style.backgroundColor = '#FF0000';
-            document.getElementById((p1+2)*10+p2).style.backgroundColor = '#FF0000';
-            document.getElementById((p1+3)*10+p2).style.backgroundColor = '#FF0000';
-        }
-
-        //green
-        if(height==120 && data=='ship3' && p%10<=7 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p+1)).style.backgroundColor == ''
-                && document.getElementById((p+2)).style.backgroundColor == '')
-        {
-            document.getElementById(data).remove();
-            document.getElementById(p).style.backgroundColor = '#00FF00';
-            document.getElementById(p+1).style.backgroundColor = '#00FF00';
-            document.getElementById(p+2).style.backgroundColor = '#00FF00';
-        }
-        var p1 = Math.floor(p/10);
-        var p2 = p%10;
-
-        if(height>120 && data=='ship3' && p1<=7 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p1+1)*10+p2).style.backgroundColor == ''
-                && document.getElementById((p1+2)*10+p2).style.backgroundColor == '')
-        {
-            document.getElementById(data).remove();
-            document.getElementById(p).style.backgroundColor = '#00FF00';
-            document.getElementById((p1+1)*10+p2).style.backgroundColor = '#00FF00';
-            document.getElementById((p1+2)*10+p2).style.backgroundColor = '#00FF00';
-        }
-
-        //black
-        if(height==120 && data=='ship4' && p%10<=8 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p+1)).style.backgroundColor == '')
-        {
-            document.getElementById(data).remove();
-            document.getElementById(p).style.backgroundColor = '#000000';
-            document.getElementById(p+1).style.backgroundColor = '#000000';
-        }
-        var p1 = Math.floor(p/10);
-        var p2 = p%10;
-
-        if(height>120 && data=='ship4' && p1<=8 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p1+1)*10+p2).style.backgroundColor == '')
-        {
-            document.getElementById(data).remove();
-            document.getElementById(p).style.backgroundColor = '#000000';
-            document.getElementById((p1+1)*10+p2).style.backgroundColor = '#000000';
-        }
-        //console.log(document.getElementById('ship1'));
-        if(document.getElementById('ship1')==null && document.getElementById('ship2')==null && document.getElementById('ship3')==null && document.getElementById('ship4')==null)
-        {
-            document.getElementById("submit").disabled = false;
-        }
-    }
-
-    function ship1Function()
-    {
-        var h1 = $('#ship1').height();
-        var h2 = $('#ship1 div').height();
-        var w1 = $('#ship1').width();
-        var w2 = $('#ship1 div').width();
-        console.log(h1);
-        $('#ship1').css('height', w1);
-        $('#ship1').css('width', h1);
-        $('#ship1 div').css('height', w2);
-        $('#ship1 div').css('width', h2);
-    }
-
-    function ship2Function()
-    {
-        var h1 = $('#ship2').height();
-        var h2 = $('#ship2 div').height();
-        var w1 = $('#ship2').width();
-        var w2 = $('#ship2 div').width();
-        console.log(h1);
-        $('#ship2').css('height', w1);
-        $('#ship2').css('width', h1);
-        $('#ship2 div').css('height', w2);
-        $('#ship2 div').css('width', h2);
-    }
-
-    function ship3Function()
-    {
-        var h1 = $('#ship3').height();
-        var h2 = $('#ship3 div').height();
-        var w1 = $('#ship3').width();
-        var w2 = $('#ship3 div').width();
-        console.log(h1);
-        $('#ship3').css('height', w1);
-        $('#ship3').css('width', h1);
-        $('#ship3 div').css('height', w2);
-        $('#ship3 div').css('width', h2);
-    }
-
-    function ship4Function()
-    {
-        var h1 = $('#ship4').height();
-        var h2 = $('#ship4 div').height();
-        var w1 = $('#ship4').width();
-        var w2 = $('#ship4 div').width();
-        console.log(h1);
-        $('#ship4').css('height', w1);
-        $('#ship4').css('width', h1);
-        $('#ship4 div').css('height', w2);
-        $('#ship4 div').css('width', h2);
-    }
-    function submitMatrix()
-    {
-        console.log(document.getElementById("93").style.backgroundColor);
-        var sampleChatRef = new Firebase('https://codeday.firebaseio.com/');
-        var fredNameRef = sampleChatRef.child('users/fred/name');
-        sampleChatRef.set({first: 'Fred', last: 'Flintstone'});
-
-    }
-</script>
-
+<script src="/javascripts/jquery-2.1.1.min.js"></script>
+<script src="/javascripts/application.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h2>Welcome to battleship game !!!</h2>
-<h4>Choose your battleship positions</h4>
+<h2 class="text-center">Welcome to battleship game !!!</h2>
+<h4 class="text-center">Choose your battleship positions</h4>
 <div id="playfield" ondrop="drop(event)" ondragover="allowDrop(event)">
     <div>
         <span id="11"></span>
@@ -457,7 +112,7 @@
 
     </div>
 </div>
-<h4>Place all four of these ships in the grid above</h4>
+<h4 class="text-center">Place all four of these ships in the grid above</h4>
 <div id="ship1" draggable="true" ondragstart="drag(event)">
     <div name="ship1">
         <span id="s1"></span>
@@ -468,6 +123,7 @@
         <a class="mini-listing gray button" onClick="ship1Function(); return false;" href="">Rotate</a>
     </div>
 </div>
+<br/><br/><br/><br/><br/><br/><br/><br/>
 <div id="ship2" draggable="true" ondragstart="drag(event)">
     <div name="ship2">
         <span id="s1"></span>
@@ -477,6 +133,7 @@
         <a class="mini-listing gray button" onClick="ship2Function(); return false;" href="">Rotate</a>
     </div>
 </div>
+<br/><br/><br/><br/><br/><br/>
 <div id="ship3" draggable="true" ondragstart="drag(event)">
     <div name="ship3">
         <span id="s1"></span>
@@ -485,6 +142,7 @@
         <a class="mini-listing gray button" onClick="ship3Function(); return false;" href="">Rotate</a>
     </div>
 </div>
+<br/><br/><br/><br/>
 <div id="ship4" draggable="true" ondragstart="drag(event)">
     <div name="ship4">
         <span id="s1"></span>
@@ -492,9 +150,9 @@
         <a class="mini-listing gray button" onClick="ship4Function(); return false;" href="">Rotate</a>
     </div>
 </div>
-
-<button type="button" width="48" id="submit" height="48" onClick="submitMatrix()" disabled>Submit</button>
-<button type="button" width="48" id="reset" height="48" onClick="window.location.reload()">Reset</button>
-
+<div class="col-md-4 text-center">
+    <button type="button" id="submit" class="btn-primary" onClick="submitMatrix()" disabled>Submit</button>
+    <button type="button"id="reset" class="btn-primary" onClick="window.location.reload()">Reset</button>
+</div>
 </body>
 </html>
