@@ -1,6 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Battleship</title>
@@ -10,27 +8,40 @@
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
 
     <!-- Latest compiled and minified JavaScript -->
+    <script src="/javascripts/jquery-2.1.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.15/firebase.js'></script>
     <script type='text/javascript' src='https://cdn.firebase.com/js/simple-login/1.4.1/firebase-simple-login.js'></script>
-    <script src="/javascripts/jquery-2.1.1.min.js"></script>
     <script>
         var authClient = null;
         $(document).ready(function() {
             var chatRef = new Firebase('https://codeday.firebaseio.com');
             authClient = new FirebaseSimpleLogin(chatRef, function(error, user) {
-                    if(user!=null)
+                    if (error) {
+                    // an error occurred while attempting login
+                        console.log(error);
+                    }
+                    else if(user!=null)
                     {
                         console.log(user.id);
                         console.log(user.provider);
                         console.log(user.uid);
-                        window.location = "/shipselection.html"
+                        //$.post( "/shipselection.html", { user: user.id } );
+                        //window.location = "/shipselection.html?user="+user.id;
+                        $( "#user").val(user.id);
+                        $("#form").submit();
+                    }
+                    else{
+                        //user logged out
                     }
             });
         });
     </script>
 </head>
 <body>
+    <form style="display: hidden" action="/shipselection.html" method="GET" id="form">
+        <input type="hidden" id="user" name="user" value=""/>
+    </form>
     <div class="container"></div>
         <div class="row-fluid">
         <div id="login_screen">

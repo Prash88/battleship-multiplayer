@@ -1,6 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Battleship</title>
@@ -11,11 +9,242 @@
 <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
 <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.15/firebase.js'></script>
 <script src="/javascripts/jquery-2.1.1.min.js"></script>
-<script src="/javascripts/application.js"></script>
-<!-- Latest compiled and minified JavaScript -->
+ <!-- Latest compiled and minified JavaScript -->
 <script src="/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var user = getUrlVars()["user"];
+        if(user==null)
+            window.location = "/index.html";
+
+    });
+
+    function allowDrop(ev)
+    {
+        ev.preventDefault();
+    }
+
+    function drag(ev)
+    {
+        var t = ev.target.id;
+        ev.dataTransfer.setData("ship",t);
+    }
+
+    function drop(ev)
+    {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("ship");
+        var height = document.getElementById(data).offsetHeight;
+        var p =  parseInt(ev.target.id);
+        if(height==60 && data=='ship1' && p%10<=5 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p+1)).style.backgroundColor == ''
+                && document.getElementById((p+2)).style.backgroundColor == '' && document.getElementById((p+3)).style.backgroundColor == '' && document.getElementById((p+4)).style.backgroundColor == '')
+        {
+            document.getElementById(data).remove();
+            document.getElementById(p).style.backgroundColor = '#0d2f5a';
+            document.getElementById(p+1).style.backgroundColor = '#0d2f5a';
+            document.getElementById(p+2).style.backgroundColor = '#0d2f5a';
+            document.getElementById(p+3).style.backgroundColor = '#0d2f5a';
+            document.getElementById(p+4).style.backgroundColor = '#0d2f5a';
+        }
+        var p1 = Math.floor(p/10);
+        var p2 = p%10;
+
+        if(height>60 && data=='ship1' && p1<=5 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p1+1)*10+p2).style.backgroundColor == ''
+                && document.getElementById((p1+2)*10+p2).style.backgroundColor == '' && document.getElementById((p1+3)*10+p2).style.backgroundColor == '' && document.getElementById((p1+4)*10+p2).style.backgroundColor == '')
+        {
+            document.getElementById(data).remove();
+            document.getElementById(p).style.backgroundColor = '#0d2f5a';
+            document.getElementById((p1+1)*10+p2).style.backgroundColor = '#0d2f5a';
+            document.getElementById((p1+2)*10+p2).style.backgroundColor = '#0d2f5a';
+            document.getElementById((p1+3)*10+p2).style.backgroundColor = '#0d2f5a';
+            document.getElementById((p1+4)*10+p2).style.backgroundColor = '#0d2f5a';
+        }
+//red
+        if(height==60 && data=='ship2' && p%10<=6 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p+1)).style.backgroundColor == ''
+                && document.getElementById((p+2)).style.backgroundColor == '' && document.getElementById((p+3)).style.backgroundColor == '')
+        {
+            document.getElementById(data).remove();
+            document.getElementById(p).style.backgroundColor = '#FF0000';
+            document.getElementById(p+1).style.backgroundColor = '#FF0000';
+            document.getElementById(p+2).style.backgroundColor = '#FF0000';
+            document.getElementById(p+3).style.backgroundColor = '#FF0000';
+        }
+        var p1 = Math.floor(p/10);
+        var p2 = p%10;
+
+        if(height>60 && data=='ship2' && p1<=6 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p1+1)*10+p2).style.backgroundColor == ''
+                && document.getElementById((p1+2)*10+p2).style.backgroundColor == '' && document.getElementById((p1+3)*10+p2).style.backgroundColor == '')
+        {
+            document.getElementById(data).remove();
+            document.getElementById(p).style.backgroundColor = '#FF0000';
+            document.getElementById((p1+1)*10+p2).style.backgroundColor = '#FF0000';
+            document.getElementById((p1+2)*10+p2).style.backgroundColor = '#FF0000';
+            document.getElementById((p1+3)*10+p2).style.backgroundColor = '#FF0000';
+        }
+
+        //green
+        if(height==60 && data=='ship3' && p%10<=7 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p+1)).style.backgroundColor == ''
+                && document.getElementById((p+2)).style.backgroundColor == '')
+        {
+            document.getElementById(data).remove();
+            document.getElementById(p).style.backgroundColor = '#00FF00';
+            document.getElementById(p+1).style.backgroundColor = '#00FF00';
+            document.getElementById(p+2).style.backgroundColor = '#00FF00';
+        }
+        var p1 = Math.floor(p/10);
+        var p2 = p%10;
+
+        if(height>60 && data=='ship3' && p1<=7 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p1+1)*10+p2).style.backgroundColor == ''
+                && document.getElementById((p1+2)*10+p2).style.backgroundColor == '')
+        {
+            document.getElementById(data).remove();
+            document.getElementById(p).style.backgroundColor = '#00FF00';
+            document.getElementById((p1+1)*10+p2).style.backgroundColor = '#00FF00';
+            document.getElementById((p1+2)*10+p2).style.backgroundColor = '#00FF00';
+        }
+
+        //black
+        if(height==60 && data=='ship4' && p%10<=8 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p+1)).style.backgroundColor == '')
+        {
+            document.getElementById(data).remove();
+            document.getElementById(p).style.backgroundColor = '#000000';
+            document.getElementById(p+1).style.backgroundColor = '#000000';
+        }
+        var p1 = Math.floor(p/10);
+        var p2 = p%10;
+
+        if(height>60 && data=='ship4' && p1<=8 && document.getElementById(p).style.backgroundColor == '' && document.getElementById((p1+1)*10+p2).style.backgroundColor == '')
+        {
+            document.getElementById(data).remove();
+            document.getElementById(p).style.backgroundColor = '#000000';
+            document.getElementById((p1+1)*10+p2).style.backgroundColor = '#000000';
+        }
+        //console.log(document.getElementById('ship1'));
+        if(document.getElementById('ship1')==null && document.getElementById('ship2')==null && document.getElementById('ship3')==null && document.getElementById('ship4')==null)
+        {
+            document.getElementById("submit").disabled = false;
+        }
+    }
+
+    function ship1Function()
+    {
+        var h1 = $('#ship1').height();
+        var h2 = $('#ship1 div').height();
+        var w1 = $('#ship1').width();
+        var w2 = $('#ship1 div').width();
+        console.log(h1);
+        $('#ship1').css('height', w1);
+        $('#ship1').css('width', h1);
+        $('#ship1 div').css('height', w2);
+        $('#ship1 div').css('width', h2);
+    }
+
+    function ship2Function()
+    {
+        var h1 = $('#ship2').height();
+        var h2 = $('#ship2 div').height();
+        var w1 = $('#ship2').width();
+        var w2 = $('#ship2 div').width();
+        console.log(h1);
+        $('#ship2').css('height', w1);
+        $('#ship2').css('width', h1);
+        $('#ship2 div').css('height', w2);
+        $('#ship2 div').css('width', h2);
+    }
+
+    function ship3Function()
+    {
+        var h1 = $('#ship3').height();
+        var h2 = $('#ship3 div').height();
+        var w1 = $('#ship3').width();
+        var w2 = $('#ship3 div').width();
+        console.log(h1);
+        $('#ship3').css('height', w1);
+        $('#ship3').css('width', h1);
+        $('#ship3 div').css('height', w2);
+        $('#ship3 div').css('width', h2);
+    }
+
+    function ship4Function()
+    {
+        var h1 = $('#ship4').height();
+        var h2 = $('#ship4 div').height();
+        var w1 = $('#ship4').width();
+        var w2 = $('#ship4 div').width();
+        console.log(h1);
+        $('#ship4').css('height', w1);
+        $('#ship4').css('width', h1);
+        $('#ship4 div').css('height', w2);
+        $('#ship4 div').css('width', h2);
+    }
+    function submitMatrix()
+    {
+        //console.log(document.getElementById("93").style.backgroundColor);
+        //var v11 = document.getElementById("11").style.backgroundColor;
+        var v = new Array();
+        v[0]=new Array(10);
+        v[1]=new Array(10);
+        v[2]=new Array(10);
+        v[3]=new Array(10);
+        v[4]=new Array(10);
+        v[5]=new Array(10);
+        v[6]=new Array(10);
+        v[7]=new Array(10);
+        v[8]=new Array(10);
+        v[9]=new Array(10);
+
+        for(var i=1;i<10;i++)
+        {
+            for(var j=1;j<10;j++)
+            {
+                var idm = (i*10)+j;
+                console.log(idm);
+                v[i][j] = document.getElementById(idm).style.backgroundColor;
+            }
+        }
+        var user = getUrlVars()["user"];
+        var sampleChatRef = new Firebase('https://codeday.firebaseio.com/');
+        var fredNameRef = sampleChatRef.child('users/'+user+'/');
+        for(var i=1;i<10;i++)
+        {
+            for(var j=1;j<10;j++)
+            {
+                var id = i*10+j;
+                fredNameRef.child(id).set(v[i][j]);
+            }
+        }
+
+           var delay=3000;//1 seconds
+    setTimeout(function(){
+
+    //your code to be executed after 1 seconds
+
+        $("#user").val(user);
+        $("#form").submit();
+        
+    },delay);
+
+    }
+
+    // Read a page's GET URL variables and return them as an associative array.
+    function getUrlVars()
+    {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for(var i = 0; i < hashes.length; i++)
+        {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+</script>
 </head>
 <body>
+<form style="display: hidden" action="/gameplay.html" method="GET" id="form">
+    <input type="hidden" id="user" name="user" value=""/>
+</form>
 <h2 class="text-center">Welcome to battleship game !!!</h2>
 <h4 class="text-center">Choose your battleship positions</h4>
 <div id="playfield" ondrop="drop(event)" ondragover="allowDrop(event)">
@@ -151,7 +380,7 @@
     </div>
 </div>
 <div class="col-md-4 text-center">
-    <button type="button" id="submit" class="btn-primary" onClick="submitMatrix()" disabled>Submit</button>
+    <button type="button" id="submit" class="btn-primary" onClick="submitMatrix()" disabled="disabled">Submit</button>
     <button type="button"id="reset" class="btn-primary" onClick="window.location.reload()">Reset</button>
 </div>
 </body>
